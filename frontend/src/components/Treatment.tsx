@@ -77,7 +77,7 @@ function Treatment(props: any){
         
 
         { field: "treatment_detail", headerName: "Treatment", width: 90 },
-
+ 
         { field: "treatment_time", headerName: "Treatment Time", width: 120 },
 
         { field: "treatment_code", headerName: "Treatment code", width: 120 },

@@ -66,7 +66,7 @@ func CreateTreatment(c *gin.Context) {
 	}
 	c.JSON(http.StatusCreated, gin.H{"data": treatment})
 }
-
+ 
 // GET /user/:id
 func GetTreatment(c *gin.Context) {
 	var treatments entity.Treatment

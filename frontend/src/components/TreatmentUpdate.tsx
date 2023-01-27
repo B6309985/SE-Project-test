@@ -40,8 +40,13 @@ function TreatmentUpdate() {
     const [patient, setPatient] = React.useState<PatientsInterface[]>([]);
     const [type_of_treatments, setType_of_treatments] = React.useState<Type_of_treatments_Interface[]>([]);
     const [type_of_number_of_treatments, setType_of_number_treatments] = React.useState<Type_of_number_of_treatment_Interface[]>([]);
-    const [treatment, setTreatment] = React.useState<TreatmentsInterface>({Treatment_time: new Date(), });
-        
+    const [treatment, setTreatment] = React.useState<TreatmentsInterface>({ Treatment_time: new Date(), });
+    const [treatment_detail, setTreatment_detail] = React.useState<string>("");
+    const [treatment_code, setTreatment_code] = React.useState<string>("");
+    const [other_teeth_problems, setOther_teeth_problems] = React.useState<string>("");
+    const [number_of_cavities, setNumber_of_cavities] = React.useState(0);
+    const [number_of_swollen_gums, setNumber_of_swollen_gums] = React.useState(0);
+    const [number_of_treatment, setNumber_of_treatment] = React.useState(0);
 
     const apiUrl = "http://localhost:8080";
     const requestOptions = {
@@ -51,6 +56,61 @@ function TreatmentUpdate() {
             "Content-Type": "application/json"
         },
     };
+
+    const { id } = useParams();
+
+    
+  useEffect(() => {
+    fetch(`http://localhost:8080/treatments/${id}`)
+    .then((response) => response.json())
+    .then((res) => {
+             
+           
+          
+            if (res.data) {
+                console.log("gt")
+                
+                console.log(res.data.Treatment_code)
+                setTreatment_code(res.data.Treatment_code.toString());
+        
+                console.log(res.data.Treatment_detail)
+                setTreatment_detail(res.data.Treatment_detail.toString());
+
+                console.log(res.data.Other_teeth_problems)
+                setOther_teeth_problems(res.data.Other_teeth_problems.toString());
+
+ 
+                console.log(res.data.Number_of_cavities)
+                
+                console.log(res.data.Number_of_swollen_gums)
+                console.log(res.data.Number_of_treatment)
+                setNumber_of_cavities(res.data.Number_of_cavities.toString());
+
+                
+                setNumber_of_swollen_gums(res.data.Number_of_swollen_gums.toString());
+                setNumber_of_treatment(res.data.Number_of_treatment.toString());
+
+                console.log("id forenkey")
+                console.log(res.data.DentistID)
+                setADentist(res.data.DentistID.toString());
+
+                console.log("id forenkey")
+
+              
+
+                console.log("af set")
+                console.log(treatment_code)
+                console.log("af set")
+                console.log("gt")
+                console.log("treatment +id")
+                const dataString = JSON.stringify(res.data);
+                console.log(dataString);
+                console.log("treatment +id")
+    
+            }
+        }
+      )
+  }, [id])
 
     const handleClose = (
         event?: React.SyntheticEvent | Event,
@@ -84,7 +144,9 @@ function TreatmentUpdate() {
             .then((response) => response.json())
             .then((res) => {
                 if (res.data) {
+                    console.log("patient")
                     console.log(res.data)
+                    console.log("patient")
                     setPatient(res.data);
                 }
                 else { console.log("NO DATA") }
@@ -126,8 +188,8 @@ function TreatmentUpdate() {
                 else { console.log("NO DATA") }
             });
     };
+
     
-    const { id } = useParams();
     // const value = parseInt(treatmentID!)
     // console.log("treatment by use Params id is"+treatmentID)
 
@@ -147,21 +209,21 @@ function TreatmentUpdate() {
     async function submit() {
         let data = {
             DentistID: convertType(treatment.DentistID),
-            PatientID: convertType(treatment.PatientID), 
-            
+            PatientID: convertType(treatment.PatientID),
+
             Number_of_cavities: typeof treatment.number_of_cavities === "string" ? parseInt(treatment.number_of_cavities) : 0,
             Number_of_swollen_gums: typeof treatment.number_of_swollen_gums === "string" ? parseInt(treatment.number_of_swollen_gums) : 0,
             Other_teeth_problems: treatment.other_teeth_problems ?? "",
             Type_Of_TreatmentID: convertType(treatment.Type_of_treatmentsID),
             Number_of_treatment: typeof treatment.number_of_treatment === "string" ? parseInt(treatment.number_of_treatment) : 0,
 
-            Type_Of_Number_Of_TreatmentID: convertType(treatment.Type_Of_Number_Of_TreatmentID), 
+            Type_Of_Number_Of_TreatmentID: convertType(treatment.Type_Of_Number_Of_TreatmentID),
 
-            
-            
+
+
             Treatment_detail: treatment.treatment_detail ?? "",
             Treatment_time: treatment.Treatment_time,
-            Treatment_code: treatment.treatment_code ?? "",          
+            Treatment_code: treatment.treatment_code ?? "",
         };
 
         console.log(data)
@@ -233,12 +295,12 @@ function TreatmentUpdate() {
                 <Divider />
                 <Grid container spacing={3} sx={{ padding: 2 }}>
 
-                
-                    
-                <Grid item xs={6}>
+
+
+                    <Grid item xs={6}>
                         <FormControl fullWidth variant="outlined">
                             <p className="good-font">ทันตเเพทย์</p>
-                            <Autocomplete 
+                            <Autocomplete
                                 disablePortal
                                 id="DentistID"
                                 getOptionLabel={(item: DentistsInterface) => `${item.Dentist_name}`}
@@ -247,7 +309,7 @@ function TreatmentUpdate() {
                                 isOptionEqualToValue={(option, value) =>
                                     option.ID === value.ID}
                                 onChange={(e, value) => { treatment.DentistID = value?.ID }}
-                                renderInput={(params) => <TextField {...params} label="เลือกoooo" />}
+                                renderInput={(params) => <TextField {...params} label="เลือกoooo" />}                                                              
                             />
                         </FormControl>
                     </Grid>
@@ -255,7 +317,7 @@ function TreatmentUpdate() {
                     <Grid item xs={6}>
                         <FormControl fullWidth variant="outlined">
                             <p className="good-font">ผู้ป่วย</p>
-                            <Autocomplete 
+                            <Autocomplete
                                 disablePortal
                                 id="PatientID"
                                 getOptionLabel={(item: PatientsInterface) => `${item.Patient_name}`}
@@ -281,7 +343,7 @@ function TreatmentUpdate() {
                                 InputLabelProps={{
                                     shrink: true,
                                 }}
-                                value={treatment.number_of_cavities || ""}
+                                value={treatment.number_of_cavities || "" || number_of_cavities}
                                 onChange={handleInputChange}
                             />
                         </FormControl>
@@ -299,7 +361,7 @@ function TreatmentUpdate() {
                                 InputLabelProps={{
                                     shrink: true,
                                 }}
-                                value={treatment.number_of_swollen_gums || ""}
+                                value={treatment.number_of_swollen_gums || "" || number_of_swollen_gums}
                                 onChange={handleInputChange}
                             />
                         </FormControl>
@@ -313,7 +375,7 @@ function TreatmentUpdate() {
                                 variant="outlined"
                                 type="string"
                                 size="medium"
-                                value={treatment.other_teeth_problems || ""}
+                                value={treatment.other_teeth_problems || "" || other_teeth_problems}
                                 onChange={handleInputChange}
                             />
                         </FormControl>
@@ -326,6 +388,7 @@ function TreatmentUpdate() {
                                 disablePortal
                                 id="Type_Of_TreatmentID"
                                 getOptionLabel={(item: Type_of_treatments_Interface) => `${item.Type_of_treatment_name}`}
+
                                 options={type_of_treatments}
                                 sx={{ width: 'auto' }}
                                 isOptionEqualToValue={(option, value) =>
@@ -334,7 +397,7 @@ function TreatmentUpdate() {
                                 renderInput={(params) => <TextField {...params} label="เลือกประเภทการรักษา" />}
                             />
                         </FormControl>
-                    </Grid>    
+                    </Grid>
 
                     <Grid item xs={6}>
                         <FormControl fullWidth variant="outlined">
@@ -348,9 +411,9 @@ function TreatmentUpdate() {
                                 InputLabelProps={{
                                     shrink: true,
                                 }}
-                                value={treatment.number_of_treatment || ""}
+                                value={treatment.number_of_treatment || "" || number_of_treatment}
                                 onChange={handleInputChange}
-                             />
+                            />
                         </FormControl>
                     </Grid>
 
@@ -358,8 +421,8 @@ function TreatmentUpdate() {
                     <Grid item xs={6}>
                         <FormControl fullWidth variant="outlined">
                             <p className="good-font">ซี่ ด้าน หรือ ฟิล์ม</p>
-                            <Autocomplete 
-                                disablePortal 
+                            <Autocomplete
+                                disablePortal
                                 id="Type_Of_Number_Of_TreatmentID"
                                 getOptionLabel={(item: Type_of_number_of_treatment_Interface) => `${item.Type_of_number_of_treatment_name}`}
                                 options={type_of_number_of_treatments}
@@ -371,7 +434,7 @@ function TreatmentUpdate() {
                             />
                         </FormControl>
                     </Grid>
-                    
+
                     <Grid item xs={6}>
                         <FormControl fullWidth variant="outlined">
                             <p className="good-font">รายละเอียดการรักษา</p>
@@ -380,8 +443,11 @@ function TreatmentUpdate() {
                                 variant="outlined"
                                 type="string"
                                 size="medium"
-                                value={treatment.treatment_detail || ""}
+                                value={treatment.treatment_detail || "" || treatment_detail}
                                 onChange={handleInputChange}
+                                defaultValue={treatment_detail}
+                                
+                                
                             />
                         </FormControl>
                     </Grid>
@@ -390,7 +456,7 @@ function TreatmentUpdate() {
                         <FormControl fullWidth variant="outlined">
                             <p className="good-font">เวลาการรักษา</p>
                             <LocalizationProvider dateAdapter={AdapterDateFns}>
-                                <DatePicker 
+                                <DatePicker
                                     value={treatment.Treatment_time}
                                     onChange={(newValue) => {
                                         setTreatment({
@@ -398,7 +464,7 @@ function TreatmentUpdate() {
                                             Treatment_time: newValue,
                                         });
                                     }}
-                                    renderInput={(params) => <TextField {...params} />} 
+                                    renderInput={(params) => <TextField {...params} />}
                                 />
                             </LocalizationProvider>
                         </FormControl>
@@ -412,7 +478,7 @@ function TreatmentUpdate() {
                                 variant="outlined"
                                 type="string"
                                 size="medium"
-                                value={treatment.treatment_code || ""}
+                                value={treatment.treatment_code || "" || treatment_code}
                                 onChange={handleInputChange}
                             />
                         </FormControl>

@@ -46,7 +46,7 @@ type Treatment struct {
 
 	Type_Of_TreatmentID *uint 
 	Type_Of_Treatment	Type_of_treatment
-
+ 
 	Number_of_treatment int
 
 	Type_Of_Number_Of_TreatmentID *uint

@@ -45,7 +45,7 @@ func CreateTreatment_plan(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "room not found"})
 		return
 	}
-	// 12: สร้าง branch
+	// 12: สร้าง branch 
 	treatment_plan := entity.Treatment_plan{
 		Dentist:                dentists,           
 		Patient:                patients,           

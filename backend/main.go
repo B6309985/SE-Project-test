@@ -23,7 +23,7 @@ func main() {
 	r.PATCH("/treatments/:id", controller.UpdateTreatment)  
 	r.DELETE("/treatments/:id", controller.DeleteTreatment)
 
-	// Type of number of treatment Routes
+	// Type of number of treatment Routes 
 	
 	r.GET("/type_of_number_of_treatments", controller.List_Type_of_number_of_treatment)
 	r.GET("/type_of_number_of_treatments/:id", controller.Get_Type_of_number_of_treatment)
