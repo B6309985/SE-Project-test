@@ -1,5 +1,5 @@
-import { DentistsInterface } from "./IDentist";
-import { PatientsInterface } from "./IPatient";
+import { DentistInterface } from "./IDentist";
+import { PatientInterface } from "./IPatient";
 import { Type_of_treatments_Interface } from "./IType_of_treatment"; 
 import { Type_of_number_of_treatment_Interface } from "./IType_of_number_of_treatment"; 
 
@@ -8,10 +8,10 @@ export interface TreatmentsInterface {
     ID?: number; 
   
     DentistID?:  number;
-	Dentist?:  DentistsInterface 
+	Dentist?:  DentistInterface 
  
 	PatientID?:  number;
-	Patient?:    PatientsInterface 
+	Patient?:    PatientInterface  
 
 	number_of_cavities?:  number;
 
